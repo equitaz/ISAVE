@@ -170,7 +170,7 @@ export function FocusRail({ items, initialIndex = 0, loop = true, className }: F
                   opacity: isCenter ? 1 : Math.max(0.1, 1 - dist * 0.5),
                   filter:  `blur(${isCenter ? 0 : dist * 5}px) brightness(${isCenter ? 1 : 0.45})`,
                 }}
-                transition={(key) => key === "scale" ? TAP_SPRING : BASE_SPRING}
+                transition={(key: string) => key === "scale" ? TAP_SPRING : BASE_SPRING}
                 onClick={() => { if (offset !== 0) setActive((p) => p + offset); }}
               >
                 {item.placeholder ? (
