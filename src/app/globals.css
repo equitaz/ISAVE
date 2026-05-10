@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #141414;            /* 92% black */
+  --bg-deep: #0a0a0a;
+  --fg: #ffffff;
+  --fg-mute: rgba(255, 255, 255, 0.62);
+  --fg-faint: rgba(255, 255, 255, 0.42);
+  --primary: #2a9ffa;
+  --secondary: #ff9a0c;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.14);
+}
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* No native smooth scroll — Lenis handles it */
+html { scroll-behavior: auto; }
+
+body {
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--primary); color: #051221; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2a9ffa, #1a8cdf);
+  border-radius: 6px;
+  border: 2px solid #0a0a0a;
+}
+::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 14px rgba(42,159,250,0.6); }
+
+/* Focus ring (accessibility) */
+:where(a, button, [role="button"], input, select, textarea):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Lenis required */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@layer components {
+  .display { font-family: var(--font-display), system-ui, sans-serif; font-weight: 600; letter-spacing: -0.03em; }
+  .mono { font-family: var(--font-mono), monospace; }
+  .eyebrow {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+  }
+  .hairline { border-color: var(--hairline); }
+  .glass {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+    border: 1px solid var(--hairline);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .glass-strong {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+    border: 1px solid var(--hairline-strong);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 h-12 rounded-full text-sm tracking-wide font-medium transition-all duration-300;
+    background: var(--primary);
+    color: #051221;
+    box-shadow: 0 0 0 0 rgba(42,159,250,0), 0 18px 60px -20px rgba(42,159,250,0.6);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 4px rgba(42,159,250,0.18), 0 24px 70px -18px rgba(42,159,250,0.85);
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 h-12 rounded-full text-sm tracking-wide font-medium transition-all duration-300;
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--hairline-strong);
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.28);
+  }
+  .chip {
+    @apply inline-flex items-center gap-2 px-4 h-9 rounded-full text-xs;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--hairline);
+    color: var(--fg-mute);
+  }
+}
+
+/* ── Section dividers ──────────────────────────────────────────────────────
+   A centred gradient hairline sits at the top of every section that follows
+   another section. Skips #home (hero) to keep the hero edge-to-edge.
+   Requires position:relative on the section (all ours already have it).     */
+main > section:not(#home)::before,
+main > footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  max-width: 900px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.10) 25%,
+    rgba(255, 255, 255, 0.10) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Reduced motion: kill all decorative animation */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Subtle film-grain noise overlay used on hero/CTA */
+.noise::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}
