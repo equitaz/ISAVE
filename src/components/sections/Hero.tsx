@@ -40,7 +40,8 @@ export default function Hero() {
   const videoRef      = useRef<HTMLVideoElement>(null);
   const introRef      = useRef<HTMLDivElement>(null);
   const hintRef       = useRef<HTMLDivElement>(null);
-  const labelRefs     = useRef<(HTMLDivElement | null)[]>([]);
+  const labelRefs     = useRef<(HTMLDivElement | null)[]>([]); // desktop (lg+)
+  const mlabelRefs    = useRef<(HTMLDivElement | null)[]>([]); // mobile/tablet (<lg)
   const colorRef      = useRef<HTMLDivElement>(null);
   const dimRef        = useRef<HTMLDivElement>(null);
   // Final reveal refs — imperative, no React state
@@ -60,6 +61,12 @@ export default function Hero() {
         if (!el) return;
         el.style.opacity   = "0";
         el.style.transform = "translateY(calc(-50% + 22px))";
+      });
+      // Mobile labels
+      mlabelRefs.current.forEach(el => {
+        if (!el) return;
+        el.style.opacity   = "0";
+        el.style.transform = "translateY(10px)";
       });
     };
 
@@ -103,7 +110,7 @@ export default function Hero() {
       if (hintRef.current) {
         hintRef.current.style.opacity = String(clamp(1 - (t - 1.5) / 0.8, 0, 1));
       }
-      // Service labels
+      // Desktop service labels (lg+)
       LABEL_WINDOWS.forEach((w, i) => {
         const el = labelRefs.current[i];
         if (!el) return;
@@ -113,6 +120,17 @@ export default function Hero() {
         const y  = (1 - fadeIn) * 22 - fadeOut * 22;
         el.style.opacity   = String(op);
         el.style.transform = `translateY(calc(-50% + ${y}px))`;
+      });
+      // Mobile/tablet labels — centred, same timing windows
+      LABEL_WINDOWS.forEach((w, i) => {
+        const el = mlabelRefs.current[i];
+        if (!el) return;
+        const fadeIn  = clamp((t - w.enter) / 0.5, 0, 1);
+        const fadeOut = clamp((t - w.exit)  / 0.5, 0, 1);
+        const op = fadeIn * (1 - fadeOut);
+        const yPx = (1 - op) * 12;
+        el.style.opacity   = String(op);
+        el.style.transform = `translateX(-50%) translateY(calc(-50% + ${yPx}px))`;
       });
       // Color grade
       if (colorRef.current) {
@@ -194,7 +212,7 @@ export default function Hero() {
       <div ref={introRef} className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center pointer-events-none"
            style={{ willChange: "opacity", transition: "opacity 0.5s ease" }}>
         <div style={{
-          padding: "clamp(1.75rem,4vw,3rem) clamp(2rem,5vw,4rem)",
+          padding: "clamp(1.25rem,4vw,3rem) clamp(1.25rem,5vw,4rem)",
           borderRadius: "24px",
           background: "rgba(6,8,16,0.52)",
           backdropFilter: "blur(18px) saturate(140%)",
@@ -229,7 +247,7 @@ export default function Hero() {
         </span>
       </div>
 
-      {/* Service labels */}
+      {/* Service labels — desktop (lg+): left/right alternating */}
       <div className="absolute inset-0 pointer-events-none hidden lg:block" aria-hidden>
         {heroCards.map((card, i) => {
           const isLeft = SIDES[i] === "left";
@@ -256,6 +274,35 @@ export default function Hero() {
         })}
       </div>
 
+      {/* Service labels — mobile/tablet (<lg): centered, one at a time */}
+      <div className="absolute inset-0 pointer-events-none lg:hidden" aria-hidden>
+        {heroCards.map((card, i) => (
+          <div key={card.title}
+               ref={el => { mlabelRefs.current[i] = el; }}
+               className="absolute text-center px-8"
+               style={{
+                 top: "50%", left: "50%",
+                 transform: "translateX(-50%) translateY(-50%)",
+                 width: "min(100%, 420px)",
+                 opacity: 0,
+                 willChange: "opacity, transform",
+               }}>
+            <div style={{ margin: "0 auto 1rem", height: "2px", width: "2.5rem",
+              background: "linear-gradient(90deg,#2a9ffa,#ff9a0c)" }} />
+            <h2 className="display text-white"
+                style={{ fontSize: "clamp(1.6rem,6vw,2.4rem)", lineHeight: 1.05,
+                  textShadow: "0 2px 40px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.8)" }}>
+              {card.title}
+            </h2>
+            <p className="text-white/75"
+               style={{ marginTop: "0.75rem", fontSize: "clamp(0.85rem,3.5vw,1rem)", lineHeight: 1.6,
+                 textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}>
+              {card.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+
       {/* ── Final reveal — CSS transitions, zero React rerenders ── */}
       <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center pointer-events-none">
 
@@ -266,14 +313,14 @@ export default function Hero() {
                pointerEvents: "none" }}>
           <div className="absolute -inset-12 bg-radial-spot blur-2xl opacity-80" />
           <Image src="/brand/logotype.png" alt="ISAVE Production" width={420} height={420} priority
-                 className="relative w-[300px] md:w-[420px] h-auto select-none drop-shadow-[0_18px_40px_rgba(42,159,250,0.25)]" />
+                 className="relative w-[160px] sm:w-[220px] md:w-[340px] lg:w-[420px] h-auto select-none drop-shadow-[0_18px_40px_rgba(42,159,250,0.25)]" />
         </div>
 
         {/* Headline + body in one block so they animate together */}
         <div ref={headlineRef}
              style={{ opacity: 0, transform: "translateY(28px)", willChange: "opacity, transform",
                transition: "opacity 1.1s cubic-bezier(0.16,1,0.3,1) 0.18s, transform 1.1s cubic-bezier(0.16,1,0.3,1) 0.18s" }}>
-          <h1 className="display max-w-4xl text-[clamp(1.85rem,4.6vw,3.75rem)] leading-[1.04] tracking-tightest text-white">
+          <h1 className="display max-w-4xl text-[clamp(1.5rem,5vw,3.75rem)] leading-[1.06] tracking-tightest text-white">
             Professional AV experiences
             <br className="hidden md:block" />
             {" "}for <span className="text-brand-500">modern events</span>.

@@ -105,7 +105,7 @@ export function FocusRail({ items, initialIndex = 0, loop = true, className }: F
   return (
     <div
       ref={containerRef}
-      className={`relative flex h-[640px] md:h-[760px] w-full flex-col overflow-hidden select-none outline-none ${className ?? ""}`}
+      className={`relative flex h-[560px] sm:h-[620px] md:h-[760px] w-full flex-col overflow-hidden select-none outline-none ${className ?? ""}`}
       tabIndex={0}
       onKeyDown={onKeyDown}
     >
@@ -134,7 +134,7 @@ export function FocusRail({ items, initialIndex = 0, loop = true, className }: F
       {/* 3-D card rail */}
       <div className="relative z-10 flex flex-1 flex-col justify-center">
         <motion.div
-          className="relative mx-auto flex h-[400px] md:h-[500px] w-full max-w-6xl items-center justify-center cursor-grab active:cursor-grabbing"
+          className="relative mx-auto flex h-[320px] sm:h-[380px] md:h-[500px] w-full max-w-6xl items-center justify-center cursor-grab active:cursor-grabbing"
           style={{ perspective: "1200px" }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
@@ -156,14 +156,14 @@ export function FocusRail({ items, initialIndex = 0, loop = true, className }: F
                 key={index}
                 className="absolute rounded-2xl overflow-hidden shadow-2xl"
                 style={{
-                  width: "min(380px, 70vw)",
+                  width: "min(280px, 68vw)",
                   aspectRatio: "3/4",
                   transformStyle: "preserve-3d",
                   zIndex: isCenter ? 20 : 10,
                   border: "1px solid rgba(255,255,255,0.10)",
                 }}
                 animate={{
-                  x:       offset * 420,
+                  x:       offset * 310,
                   z:       -dist * 180,
                   scale:   isCenter ? 1 : 0.82,
                   rotateY: offset * -18,

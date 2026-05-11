@@ -34,7 +34,7 @@ export default function BackToTop() {
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           onClick={scrollToTop}
           aria-label="Back to top"
-          className="fixed bottom-8 right-6 z-50 group"
+          className="fixed bottom-6 right-4 md:bottom-8 md:right-6 z-50 group"
         >
           <span
             className="flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300"
