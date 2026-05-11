@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import { services } from "@/lib/services";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 const PARTNERS = [
   "Event planners",
@@ -58,8 +59,8 @@ export default function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {services.map((s, i) => (
+            <SpotlightCard key={s.num} className="rounded-3xl h-full">
             <motion.article
-              key={s.num}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={view}
@@ -99,6 +100,7 @@ export default function Services() {
                 </span>
               </footer>
             </motion.article>
+            </SpotlightCard>
           ))}
         </div>
       </div>
