@@ -30,7 +30,7 @@ export default function About() {
                    style={{ background: "radial-gradient(60% 60% at 50% 50%, rgba(42,159,250,0.45), transparent 70%)", filter: "blur(40px)" }} />
               <div className="relative h-full w-full rounded-[24px] overflow-hidden glass">
                 <Image
-                  src="/brand/ceo.png"
+                  src="/brand/ceo.jpeg"
                   alt="Mulham Katayah, founder of ISAVE Production"
                   width={800} height={1000}
                   className="h-full w-full object-cover"
