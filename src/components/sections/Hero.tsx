@@ -63,7 +63,7 @@ function smoothstep(edge0: number, edge1: number, x: number): number {
 
 export default function Hero() {
   const videoRef    = useRef<HTMLVideoElement>(null);
-  const introRef    = useRef<HTMLDivElement>(null);
+  const introRef    = useRef<HTMLDivElement>(null); // kept for hideTransientEls compat
   const hintRef     = useRef<HTMLDivElement>(null);
   const labelRefs   = useRef<(HTMLDivElement | null)[]>([]);   // desktop
   const mframeRefs  = useRef<(HTMLDivElement | null)[]>([]);   // mobile frames
@@ -106,13 +106,6 @@ export default function Hero() {
       }
 
       const t = video.currentTime;
-
-      // Intro text
-      if (introRef.current) {
-        introRef.current.style.opacity = String(
-          smoothstep(0.3, 1.0, t) * (1 - smoothstep(1.0, 1.8, t))
-        );
-      }
 
       // Scroll hint
       if (hintRef.current) {
@@ -225,33 +218,6 @@ export default function Hero() {
       {/* Reveal dim — CSS transition used (fires once) */}
       <div ref={dimRef} className="absolute inset-0 pointer-events-none"
            style={{ opacity: 0, background: "rgba(8,8,14,0.60)" }} />
-
-      {/* Intro text box */}
-      <div ref={introRef} className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center pointer-events-none"
-           style={{ opacity: 0, willChange: "opacity" }}>
-        <div style={{
-          padding: "clamp(1.25rem,4vw,3rem) clamp(1.25rem,5vw,4rem)",
-          borderRadius: "24px",
-          background: "rgba(6,8,16,0.52)",
-          backdropFilter: "blur(18px) saturate(140%)",
-          WebkitBackdropFilter: "blur(18px) saturate(140%)",
-          border: "1px solid rgba(255,255,255,0.07)",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
-          maxWidth: "min(92vw,780px)", width: "100%",
-        }}>
-          <span className="eyebrow text-white/55" style={{ letterSpacing: "0.28em", fontSize: "11px" }}>ISAVE PRODUCTION</span>
-          <h1 className="display text-white leading-[1.03] mt-4"
-              style={{ fontSize: "clamp(2rem,5vw,4.5rem)", letterSpacing: "-0.03em" }}>
-            Behind Every<br />Exceptional Event
-          </h1>
-          <div className="mx-auto mt-5 mb-5 h-px w-14"
-               style={{ background: "linear-gradient(90deg,transparent,rgba(42,159,250,0.7),transparent)" }} />
-          <p className="text-white/70 leading-relaxed"
-             style={{ fontSize: "clamp(0.9rem,1.2vw,1.1rem)", maxWidth: "480px", margin: "0 auto" }}>
-            Professional AV execution with precision, reliability and technical expertise.
-          </p>
-        </div>
-      </div>
 
       {/* Scroll hint */}
       <div ref={hintRef} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"

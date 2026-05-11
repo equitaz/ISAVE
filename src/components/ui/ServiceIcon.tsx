@@ -1,4 +1,4 @@
-type Kind = "event" | "stream" | "rental" | "studio" | "support";
+type Kind = "event" | "stream" | "rental" | "studio" | "support" | "management";
 
 /**
  * Tiny inline SVG iconset — single-stroke, neutral weight so it sits
@@ -49,6 +49,16 @@ export default function ServiceIcon({ kind, className = "" }: { kind: Kind; clas
           <path d="M5 19l5-5 3 3 6-6" />
           <path d="M14 11h5v5" />
           <circle cx="5" cy="19" r="1" />
+        </svg>
+      );
+    case "management":
+      return (
+        <svg {...common} className={className}>
+          <rect x="3" y="4" width="18" height="3" rx="1.5" />
+          <rect x="3" y="10" width="12" height="3" rx="1.5" />
+          <rect x="3" y="16" width="8" height="3" rx="1.5" />
+          <circle cx="19" cy="17.5" r="3" />
+          <path d="M17.5 17.5l1 1 2-2" strokeWidth="1.2" />
         </svg>
       );
   }

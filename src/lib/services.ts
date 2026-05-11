@@ -3,7 +3,7 @@ export type Service = {
   title: string;
   desc: string;
   bullets: string[];
-  icon: "event" | "stream" | "rental" | "studio" | "support";
+  icon: "event" | "stream" | "rental" | "studio" | "support" | "management";
 };
 
 export const services: Service[] = [
@@ -41,6 +41,13 @@ export const services: Service[] = [
     desc: "Experienced technical staff and event support for smooth productions.",
     bullets: ["AV technicians", "Event setup", "On-site operation", "DJs and speakers", "Production crew"],
     icon: "support",
+  },
+  {
+    num: "06",
+    title: "Full-Service Event Management",
+    desc: "Complete planning, coordination and production support for events that need to run smoothly from start to finish.",
+    bullets: ["Event planning support", "Venue coordination", "Run-of-show management", "Speaker & talent support", "On-site event staff"],
+    icon: "management",
   },
 ];
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import { services } from "@/lib/services";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
@@ -31,7 +32,7 @@ export default function Services() {
               transition={{ duration: 0.7 }}
               className="eyebrow"
             >
-              ◇  SERVICES · 05 CAPABILITIES
+              ◇  SERVICES · 06 CAPABILITIES
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 22 }}
@@ -72,7 +73,7 @@ export default function Services() {
 
               <header className="relative flex items-start justify-between mb-8">
                 <span className="mono text-[11px] tracking-[0.22em] text-white/40">
-                  {s.num} / 05
+                  {s.num} / 06
                 </span>
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/[0.03] border border-white/10 text-brand-500 group-hover:text-white group-hover:bg-brand-500 group-hover:border-brand-500 transition-all duration-500">
                   <ServiceIcon kind={s.icon} />
@@ -102,6 +103,7 @@ export default function Services() {
             </motion.article>
             </SpotlightCard>
           ))}
+
         </div>
       </div>
 
@@ -138,7 +140,7 @@ export default function Services() {
               clients with reliable AV production and technical event services.
             </motion.p>
           </div>
-          <div className="lg:col-span-8 flex flex-wrap gap-3">
+          <div className="lg:col-span-8 flex flex-wrap gap-3 items-center">
             {PARTNERS.map((p, i) => (
               <motion.span
                 key={p}
@@ -152,6 +154,19 @@ export default function Services() {
                 {p}
               </motion.span>
             ))}
+
+            {/* Animated sentence — sits in the empty right-side space on row 2.
+                min-w forces it onto the second row beside the last chips;
+                on mobile it wraps naturally below all chips.            */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={view}
+              transition={{ duration: 0.9, delay: 0.35 }}
+              className="min-w-[220px] flex-1 pl-1"
+            >
+              <RotatingWordSentence />
+            </motion.div>
           </div>
         </div>
       </div>
@@ -185,13 +200,63 @@ export default function Services() {
               <a href="#schedule" className="btn-primary">
                 Plan Your Event <span>→</span>
               </a>
-              <a href="#schedule" className="btn-secondary">
-                Book a Consultation
+              <a href="#contact" className="btn-secondary">
+                Contact Us
               </a>
             </div>
           </div>
         </motion.div>
       </div>
     </section>
+  );
+}
+
+// ── Rotating word sentence ────────────────────────────────────────────────────
+
+const WORDS = ["seamless", "professional", "reliable", "effortless", "memorable", "premium"] as const;
+const INTERVAL_MS = 2400;
+
+function RotatingWordSentence() {
+  const [index, setIndex] = useState(0);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    if (reduce) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % WORDS.length), INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [reduce]);
+
+  const word = WORDS[reduce ? 0 : index];
+
+  return (
+    <p
+      className="display leading-snug tracking-tightest select-none"
+      style={{ fontSize: "clamp(1rem, 1.35vw, 1.25rem)" }}
+    >
+      {/* Muted base sentence */}
+      <span className="text-white/45">Built for events that need to feel </span>
+
+      {/* Animated word — fixed-width container prevents layout shift */}
+      <span
+        className="inline-block"
+        style={{
+          /* Reserve width of the longest word (professional) so line never reflows */
+          minWidth: "9.5ch",
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={word}
+            initial={{ opacity: 0, y: 7 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -7 }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-block text-brand-500"
+          >
+            {word}.
+          </motion.span>
+        </AnimatePresence>
+      </span>
+    </p>
   );
 }
