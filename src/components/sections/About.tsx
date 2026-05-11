@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 const STATS = [
   { num: "15+", label: "Years in production" },
@@ -98,17 +99,18 @@ export default function About() {
 
             <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4">
               {STATS.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={view}
-                  transition={{ duration: 0.7, delay: i * 0.08 }}
-                  className="rounded-2xl glass p-5"
-                >
-                  <div className="display text-[clamp(1.6rem,3vw,2.1rem)] text-white">{s.num}</div>
-                  <div className="text-[12px] text-white/55 mt-1 leading-snug">{s.label}</div>
-                </motion.div>
+                <SpotlightCard key={s.label} className="rounded-2xl">
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={view}
+                    transition={{ duration: 0.7, delay: i * 0.08 }}
+                    className="rounded-2xl glass p-5"
+                  >
+                    <div className="display text-[clamp(1.6rem,3vw,2.1rem)] text-white">{s.num}</div>
+                    <div className="text-[12px] text-white/55 mt-1 leading-snug">{s.label}</div>
+                  </motion.div>
+                </SpotlightCard>
               ))}
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import { useState, useId } from "react";
 import { motion } from "framer-motion";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 const SERVICES = [
   "Event Production",
@@ -107,6 +108,7 @@ export default function Schedule() {
         </motion.div>
 
         {/* Card */}
+        <SpotlightCard className="rounded-3xl">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -273,6 +275,7 @@ export default function Schedule() {
             </form>
           )}
         </motion.div>
+        </SpotlightCard>
       </div>
     </section>
   );

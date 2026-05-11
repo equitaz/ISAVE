@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 /**
  * Vertical infinite-scroll testimonial column. Adapted from the
@@ -47,26 +48,7 @@ export function TestimonialsColumn(props: {
           ...new Array(2).fill(0).map((_, dupIndex) => (
             <React.Fragment key={dupIndex}>
               {props.testimonials.map((t, i) => (
-                <article
-                  key={`${dupIndex}-${i}`}
-                  className="glass rounded-3xl p-7 max-w-xs w-full shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]"
-                >
-                  <Stars />
-                  <p className="mt-4 text-[14.5px] leading-relaxed text-white/80">
-                    {t.text}
-                  </p>
-                  <footer className="flex items-center gap-3 mt-6">
-                    <Avatar name={t.name} initials={t.initials} />
-                    <div className="flex flex-col">
-                      <span className="display text-[14px] tracking-tight leading-5 text-white">
-                        {t.name}
-                      </span>
-                      <span className="mono text-[10.5px] tracking-wider opacity-50 leading-5 text-white">
-                        {t.role}
-                      </span>
-                    </div>
-                  </footer>
-                </article>
+                <TestimonialCard key={`${dupIndex}-${i}`} t={t} />
               ))}
             </React.Fragment>
           )),
@@ -92,6 +74,24 @@ function Avatar({ name, initials }: { name: string; initials?: string }) {
     >
       {ini}
     </span>
+  );
+}
+
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <SpotlightCard className="rounded-3xl max-w-xs w-full">
+      <article className="glass rounded-3xl p-7 w-full shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
+        <Stars />
+        <p className="mt-4 text-[14.5px] leading-relaxed text-white/80">{t.text}</p>
+        <footer className="flex items-center gap-3 mt-6">
+          <Avatar name={t.name} initials={t.initials} />
+          <div className="flex flex-col">
+            <span className="display text-[14px] tracking-tight leading-5 text-white">{t.name}</span>
+            <span className="mono text-[10.5px] tracking-wider opacity-50 leading-5 text-white">{t.role}</span>
+          </div>
+        </footer>
+      </article>
+    </SpotlightCard>
   );
 }
 
